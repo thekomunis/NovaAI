@@ -3,36 +3,44 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const orderId = searchParams.get('orderId');
-  const phone = searchParams.get('phone');
+  const rawOrderId = searchParams.get('orderId');
+  const rawPhone = searchParams.get('phone');
 
-  if (!orderId || !phone) {
+  if (!rawOrderId || !rawPhone) {
     return NextResponse.json(
       { error: 'Order ID dan nomor WhatsApp wajib diisi' },
       { status: 400 }
     );
   }
 
-  const supabase = getSupabaseAdmin();
+  const orderId = rawOrderId.trim();
+  const phone = rawPhone.trim();
 
-  // Normalize phone for lookup
-  let normalizedPhone = phone.replace(/[\s\-().]+/g, '');
-  if (normalizedPhone.startsWith('+62')) {
-    normalizedPhone = '62' + normalizedPhone.slice(3);
-  } else if (normalizedPhone.startsWith('08')) {
-    normalizedPhone = '62' + normalizedPhone.slice(1);
-  } else if (normalizedPhone.startsWith('8') && normalizedPhone.length >= 9) {
-    normalizedPhone = '62' + normalizedPhone;
+  // Normalize phone variations
+  let cleanPhone = phone.replace(/[\s\-().]+/g, '');
+  let phone62 = cleanPhone;
+  let phone08 = cleanPhone;
+
+  if (cleanPhone.startsWith('+62')) {
+    phone62 = '62' + cleanPhone.slice(3);
+    phone08 = '0' + cleanPhone.slice(3);
+  } else if (cleanPhone.startsWith('62')) {
+    phone62 = cleanPhone;
+    phone08 = '0' + cleanPhone.slice(2);
+  } else if (cleanPhone.startsWith('0')) {
+    phone08 = cleanPhone;
+    phone62 = '62' + cleanPhone.slice(1);
   }
 
+  const supabase = getSupabaseAdmin();
+
+  // Query order by case-insensitive order_id AND any matching phone format
   const { data, error } = await supabase
     .from('orders')
-    .select(
-      'order_id, product_name, variant_name, total_amount, status, fulfillment_status, payment_method, created_at, expires_at, paid_at'
-    )
-    .eq('order_id', orderId)
-    .eq('customer_phone', normalizedPhone)
-    .single();
+    .select('order_id, product_name, variant_name, total_amount, status, fulfillment_status, payment_method, created_at, expires_at, paid_at')
+    .ilike('order_id', orderId)
+    .or(`customer_phone.eq.${phone62},customer_phone.eq.${phone08},customer_phone.eq.${phone}`)
+    .maybeSingle();
 
   if (error || !data) {
     return NextResponse.json(
