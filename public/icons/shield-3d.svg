@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="shieldBg" x1="15" y1="10" x2="105" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="shieldRim" x1="10" y1="5" x2="110" y2="115" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="shadow3d" x="0" y="0" width="120" height="120" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#4F46E5" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Base 3D Shield Body -->
+  <g filter="url(#shadow3d)">
+    <path d="M60 12C85 12 102 24 102 24V58C102 85 60 108 60 108C60 108 18 85 18 58V24C18 24 35 12 60 12Z" fill="url(#shieldBg)" stroke="url(#shieldRim)" stroke-width="4"/>
+    <path d="M60 18C80 18 94 28 94 28V56C94 78 60 98 60 98C60 98 26 78 26 56V28C26 28 40 18 60 18Z" fill="#ffffff" fill-opacity="0.12"/>
+    <!-- 3D Gold Checkmark -->
+    <path d="M42 56L54 68L78 44" stroke="#FBBF24" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 56L54 68L78 44" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="rocketBody" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="0.6" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="flameGrad" x1="20" y1="90" x2="50" y2="115" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBBF24"/>
+      <stop offset="0.5" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Flame particles -->
+  <path d="M32 88C22 96 28 114 36 110C44 106 38 94 32 88Z" fill="url(#flameGrad)"/>
+  <path d="M26 84C18 90 22 104 28 100C34 96 30 88 26 84Z" fill="#FBBF24"/>
+
+  <!-- 3D Rocket Body -->
+  <path d="M96 24C96 24 72 24 50 46C38 58 32 74 30 84C40 82 56 76 68 64C90 42 96 24 96 24Z" fill="url(#rocketBody)"/>
+  <path d="M84 36C84 36 66 36 50 52C40 62 35 74 33 81C39 79 51 74 61 64C77 48 84 36 84 36Z" fill="#FFFFFF" fill-opacity="0.2"/>
+
+  <!-- Porthole Window -->
+  <circle cx="68" cy="52" r="10" fill="#0F172A" stroke="#38BDF8" stroke-width="3"/>
+  <circle cx="68" cy="52" r="5" fill="#38BDF8"/>
+
+  <!-- Wings -->
+  <path d="M38 72L22 84L30 64L38 72Z" fill="#EF4444"/>
+  <path d="M48 82L36 98L56 90L48 82Z" fill="#EF4444"/>
+</svg>
