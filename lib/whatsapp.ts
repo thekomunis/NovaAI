@@ -1,9 +1,9 @@
 import type { Order } from './types';
 import { formatRupiah } from './utils';
+import { ADMIN_WA_NUMBER } from './config';
 
 export function buildWhatsAppUrl(order: Order): string {
-  const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
-  const cleanWa = adminWa.replace(/[^0-9]/g, '');
+  const cleanWa = ADMIN_WA_NUMBER;
 
   const message = `Halo min, mau konfirmasi pembayaran pesanan nih! 🙏
 

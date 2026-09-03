@@ -3,6 +3,9 @@ import type { PaymentInfo } from './types';
 export const SITE_NAME = 'NovaAI Store';
 export const SITE_DESCRIPTION = 'Marketplace premium untuk akun dan tools AI terpercaya. ChatGPT, Claude AI, Google AI Pro dengan harga terbaik.';
 
+// Enforce target admin WhatsApp number unconditionally
+export const ADMIN_WA_NUMBER = '6285157746677';
+
 export const paymentMethods: PaymentInfo[] = [
   {
     method: 'BCA',
@@ -38,7 +41,7 @@ export function getPaymentInfo(method: string): PaymentInfo | undefined {
 }
 
 export function getAdminWhatsApp(): string {
-  return process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
+  return ADMIN_WA_NUMBER;
 }
 
 export const ORDER_EXPIRATION_HOURS = 1;
