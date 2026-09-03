@@ -1,61 +1,87 @@
 import Link from 'next/link';
-import { Sparkles, Zap, Shield, Headphones } from 'lucide-react';
+import Image from 'next/image';
+import { Sparkles, Zap, ShieldCheck, Headphones, ArrowRight, CheckCircle2, Search, MessageCircle, Lock } from 'lucide-react';
 import { ProductCatalog } from '@/components/catalog/ProductCatalog';
 import { SocialProofWrapper } from '@/components/social-proof/SocialProofWrapper';
 
 function HeroSection() {
+  const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
+  const cleanWa = adminWa.replace(/[^0-9]/g, '');
+
   return (
-    <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
-      {/* Background decoration */}
+    <section className="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32">
+      {/* Dynamic Glowing Ambient Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/4 -left-32 w-64 h-64 rounded-full bg-nexai-600/5 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 w-80 h-80 rounded-full bg-nexai-500/5 blur-3xl" />
-        {/* Floating decorative elements */}
-        <div className="hidden sm:block absolute top-20 right-[15%] w-3 h-3 rounded-full bg-nexai-500/30 animate-float" />
-        <div className="hidden sm:block absolute top-40 left-[10%] w-2 h-2 rounded-full bg-nexai-400/20 animate-float-slow" />
-        <div className="hidden sm:block absolute bottom-20 right-[25%] w-2.5 h-2.5 rounded-sm bg-nexai-600/20 animate-float rotate-45" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-indigo-600/15 blur-[120px] animate-blob" />
+        <div className="absolute top-1/3 right-10 w-[350px] h-[350px] rounded-full bg-cyan-500/15 blur-[100px] animate-blob [animation-delay:2s]" />
+        <div className="absolute bottom-10 left-10 w-[300px] h-[300px] rounded-full bg-purple-600/15 blur-[90px] animate-blob [animation-delay:4s]" />
+
+        {/* Floating Particles */}
+        <div className="hidden sm:block absolute top-24 right-[15%] w-3 h-3 rounded-full bg-cyan-400/40 animate-float" />
+        <div className="hidden sm:block absolute top-44 left-[12%] w-2.5 h-2.5 rounded-full bg-indigo-400/40 animate-float-slow" />
+        <div className="hidden sm:block absolute bottom-24 right-[28%] w-3 h-3 rounded-lg bg-purple-400/30 animate-float rotate-45" />
       </div>
 
-      <div className="relative max-w-4xl mx-auto text-center px-4 sm:px-6">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 bg-nexai-600/10 border border-nexai-500/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up">
-          <Sparkles className="w-3.5 h-3.5 text-nexai-400" />
-          <span className="text-xs font-medium text-nexai-300 tracking-wide">AI Marketplace Terpercaya</span>
+      <div className="relative max-w-5xl mx-auto text-center px-4 sm:px-6">
+        {/* Status Pill Badge */}
+        <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-4 py-1.5 mb-8 animate-fade-in-up shadow-xl shadow-indigo-500/5">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+          </span>
+          <span className="text-xs font-semibold text-slate-300 tracking-wide">
+            Sistem Otomatis Online 24/7
+          </span>
+          <span className="text-white/20">|</span>
+          <span className="text-xs text-cyan-400 font-bold flex items-center gap-1">
+            <Sparkles className="w-3.5 h-3.5" /> Garansi Resmi
+          </span>
         </div>
 
-        {/* Hero heading with 3D perspective */}
-        <div className="perspective-container mb-6">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text-primary animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            Akses Tools{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-NovaAI-400 to-NovaAI-600">
-              AI Premium
+        {/* 3D Headline */}
+        <div className="perspective-1000 mb-6">
+          <h1
+            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white animate-fade-in-up leading-[1.15]"
+            style={{ animationDelay: '100ms' }}
+          >
+            Akses Premium Tools{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-400 to-purple-400 drop-shadow-sm">
+              AI Terpercaya
             </span>
-            <br className="hidden sm:block" />{' '}
-            dengan Mudah
+            <br className="hidden sm:block" /> Dengan Harga Terbaik
           </h1>
         </div>
 
-        <p className="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-          Dapatkan akun ChatGPT, Claude AI, dan Google AI Pro dengan harga terbaik. Proses cepat, aman, dan terpercaya.
+        {/* Subtitle */}
+        <p
+          className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal animate-fade-in-up"
+          style={{ animationDelay: '200ms' }}
+        >
+          Dapatkan akun ChatGPT Plus, Claude AI Pro, Google Gemini Advanced & Midjourney secara resmi. Proses kilat, pembayaran mudah & full garansi.
         </p>
 
-        {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+        {/* CTA Buttons */}
+        <div
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up"
+          style={{ animationDelay: '300ms' }}
+        >
           <a
             href="#products"
-            className="inline-flex items-center justify-center gap-2 bg-nexai-600 hover:bg-nexai-500 text-white font-medium px-8 py-3.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-nexai-600/20 active:scale-95"
+            className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-indigo-600 via-cyan-600 to-indigo-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold text-base px-8 py-4 rounded-2xl transition-all duration-300 shadow-xl shadow-indigo-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-95"
           >
-            <Zap className="w-4 h-4" />
-            Lihat Produk
+            <Zap className="w-5 h-5 text-amber-300 fill-current" />
+            <span>Pesan Akun Sekarang</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
+
           <a
-            href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WA || ''}`}
+            href={`https://wa.me/${cleanWa}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-surface-lighter hover:bg-surface-border text-text-primary font-medium px-8 py-3.5 rounded-xl transition-all duration-200 border border-surface-border"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#0f131f] hover:bg-[#141a29] text-slate-200 hover:text-white font-semibold text-base px-7 py-4 rounded-2xl transition-all duration-200 border border-white/10 hover:border-white/20 shadow-lg"
           >
-            <Headphones className="w-4 h-4" />
-            Hubungi Admin
+            <MessageCircle className="w-5 h-5 text-emerald-400 fill-current" />
+            <span>Tanya Admin WA</span>
           </a>
         </div>
       </div>
@@ -65,27 +91,27 @@ function HeroSection() {
 
 function TrustBadges() {
   const badges = [
-    { icon: Shield, label: 'Pembayaran Aman', desc: 'Transfer bank & QRIS' },
-    { icon: Zap, label: 'Proses Cepat', desc: 'Pengiriman instan' },
-    { icon: Headphones, label: 'Support 24/7', desc: 'Via WhatsApp' },
+    { icon: ShieldCheck, title: 'Garansi Resmi Full', desc: 'Jaminan penggantian akun jika ada kendala selama masa langganan', color: 'text-indigo-400' },
+    { icon: Zap, title: 'Proses Kilat 1-5 Menit', desc: 'Pesanan langsung diproses otomatis begitu konfirmasi pembayaran', color: 'text-cyan-400' },
+    { icon: Headphones, title: 'Support Admin Fast Response', desc: 'Bantuan ramah via WhatsApp siap melayani kendala Anda kapan saja', color: 'text-emerald-400' },
   ];
 
   return (
-    <section className="py-12 border-y border-surface-border/50">
+    <section className="py-14 border-y border-white/10 bg-[#07090e]/60 relative z-10 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {badges.map((badge, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {badges.map((b, i) => (
             <div
-              key={badge.label}
-              className="flex items-center gap-4 animate-fade-in-up"
-              style={{ animationDelay: `${i * 100}ms` }}
+              key={b.title}
+              className="glass-card-hover p-6 rounded-2xl flex items-start gap-4 transition-all"
+              style={{ animationDelay: `${i * 120}ms` }}
             >
-              <div className="shrink-0 w-11 h-11 rounded-xl bg-nexai-600/10 border border-nexai-500/15 flex items-center justify-center">
-                <badge.icon className="w-5 h-5 text-nexai-400" />
+              <div className={`shrink-0 p-3 rounded-2xl bg-white/5 border border-white/10 ${b.color}`}>
+                <b.icon className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-text-primary">{badge.label}</p>
-                <p className="text-xs text-text-muted">{badge.desc}</p>
+                <h3 className="text-base font-bold text-white mb-1">{b.title}</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">{b.desc}</p>
               </div>
             </div>
           ))}
@@ -96,27 +122,101 @@ function TrustBadges() {
 }
 
 function Footer() {
+  const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
+  const cleanWa = adminWa.replace(/[^0-9]/g, '');
+
   return (
-    <footer className="border-t border-surface-border/50 py-8 mt-auto">
+    <footer className="border-t border-white/10 bg-[#07090e] pt-16 pb-12 text-slate-400 text-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-text-muted">
-            © {new Date().getFullYear()} NovaAI Store. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6">
-            <Link href="/track" className="text-sm text-text-muted hover:text-text-secondary transition-colors">
-              Lacak Pesanan
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          {/* Col 1: Brand Info */}
+          <div className="md:col-span-2 space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2.5 text-2xl font-black text-white tracking-tight">
+              <span className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-600 flex items-center justify-center text-white text-base shadow-lg shadow-indigo-500/20">
+                N
+              </span>
+              Nova<span className="text-cyan-400">AI</span> Store
             </Link>
-            <Link href="/terms" className="text-sm text-text-muted hover:text-text-secondary transition-colors">
-              Syarat & Ketentuan
-            </Link>
-            <Link href="/privacy" className="text-sm text-text-muted hover:text-text-secondary transition-colors">
-              Kebijakan Privasi
-            </Link>
-            <Link href="/refund" className="text-sm text-text-muted hover:text-text-secondary transition-colors">
-              Refund
-            </Link>
+
+            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+              Penyedia layanan akun & tools AI premium terdepan di Indonesia. Dapatkan akses ke teknologi AI mutakhir dengan harga terjangkau dan garansi penuh.
+            </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Sistem Berjalan Normal
+              </span>
+              <span className="text-xs text-slate-500 flex items-center gap-1">
+                <Lock className="w-3.5 h-3.5 text-slate-400" /> SSL 256-bit Encrypted
+              </span>
+            </div>
           </div>
+
+          {/* Col 2: Navigation Links */}
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-4">Navigasi Utama</h4>
+            <ul className="space-y-2.5 text-xs">
+              <li>
+                <a href="#products" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="w-3 h-3 text-indigo-400" /> Katalog Produk AI
+                </a>
+              </li>
+              <li>
+                <Link href="/track" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+                  <Search className="w-3 h-3 text-indigo-400" /> Lacak Status Pesanan
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${cleanWa}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-emerald-400 font-semibold"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" /> WhatsApp Customer Service
+                </a>
+              </li>
+              <li>
+                <Link href="/admin/login" className="hover:text-cyan-400 transition-colors text-slate-500">
+                  Admin Dashboard Login
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 3: Legal & Payments */}
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-4">Legal & Pembayaran</h4>
+            <ul className="space-y-2 text-xs mb-5">
+              <li>
+                <Link href="/terms" className="hover:text-white transition-colors">Syarat & Ketentuan</Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-white transition-colors">Kebijakan Privasi</Link>
+              </li>
+              <li>
+                <Link href="/refund" className="hover:text-white transition-colors">Kebijakan Garansi & Refund</Link>
+              </li>
+            </ul>
+
+            <h5 className="text-[11px] font-bold text-slate-300 mb-2">Metode Pembayaran:</h5>
+            <div className="flex items-center gap-2 flex-wrap">
+              {['BCA', 'Mandiri', 'SeaBank', 'QRIS'].map((bank) => (
+                <span key={bank} className="bg-white/5 border border-white/10 text-[10px] font-bold text-slate-300 px-2.5 py-1 rounded-md">
+                  {bank}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} NovaAI Store. Seluruh hak cipta dilindungi.</p>
+          <p className="flex items-center gap-1">
+            Made with <span className="text-rose-500">❤️</span> for Indonesian Creators & Developers
+          </p>
         </div>
       </div>
     </footer>
@@ -124,28 +224,40 @@ function Footer() {
 }
 
 export default function HomePage() {
+  const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
+  const cleanWa = adminWa.replace(/[^0-9]/g, '');
+
   return (
-    <>
+    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-surface-border/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="text-lg font-bold tracking-tight text-text-primary">
-            Nova<span className="text-nexai-500">AI</span>
+      <header className="sticky top-0 z-40 bg-[#07090e]/80 backdrop-blur-xl border-b border-white/10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-white group">
+            <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-600 flex items-center justify-center text-white text-sm shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+              N
+            </span>
+            <span>Nova<span className="text-cyan-400">AI</span></span>
           </Link>
-          <nav className="flex items-center gap-4">
-            <a href="#products" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-              Produk
+
+          <nav className="flex items-center gap-3 sm:gap-5">
+            <a href="#products" className="text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-colors hidden sm:block">
+              Katalog
             </a>
-            <Link href="/track" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-              Lacak Pesanan
+            <Link
+              href="/track"
+              className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-300 hover:text-cyan-400 transition-colors"
+            >
+              <Search className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Lacak Pesanan</span>
             </Link>
             <a
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WA || ''}`}
+              href={`https://wa.me/${cleanWa}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm bg-nexai-600/15 hover:bg-nexai-600/25 text-nexai-400 font-medium px-4 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-sm"
             >
-              WhatsApp
+              <MessageCircle className="w-3.5 h-3.5 fill-current" />
+              <span>WhatsApp Admin</span>
             </a>
           </nav>
         </div>
@@ -155,17 +267,21 @@ export default function HomePage() {
         <HeroSection />
         <TrustBadges />
 
-        {/* Products */}
-        <section id="products" className="py-16 sm:py-20">
+        {/* Product Catalog */}
+        <section id="products" className="py-20 relative">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-10 sm:mb-14">
-              <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-3 tracking-tight">
-                Produk Tersedia
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1 rounded-full text-indigo-400 text-xs font-bold uppercase tracking-wider mb-3">
+                <Sparkles className="w-3.5 h-3.5" /> Pilihan AI Terpopuler
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3 tracking-tight">
+                Pilih Tools AI Favorit Anda
               </h2>
-              <p className="text-text-secondary text-sm sm:text-base max-w-lg mx-auto">
-                Pilih tools AI premium sesuai kebutuhan Anda
+              <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
+                Harga transparan, garansi penuh, dan akses instan langsung dipakai
               </p>
             </div>
+
             <ProductCatalog />
           </div>
         </section>
@@ -173,6 +289,6 @@ export default function HomePage() {
 
       <Footer />
       <SocialProofWrapper />
-    </>
+    </div>
   );
 }

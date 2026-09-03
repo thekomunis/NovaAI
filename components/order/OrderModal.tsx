@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { X, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import Image from 'next/image';
+import { X, Loader2, CheckCircle2, AlertCircle, Sparkles, CreditCard, ShieldCheck } from 'lucide-react';
 import type { Product, PaymentMethod } from '@/lib/types';
 import type { OrderCreateResponse } from '@/lib/types';
 import { formatRupiah, normalizePhone, isValidPhone } from '@/lib/utils';
@@ -52,7 +53,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // Trap focus inside modal
+  // Prevent scroll when modal is open
   useEffect(() => {
     if (product) {
       document.body.style.overflow = 'hidden';
@@ -68,7 +69,6 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
     e.preventDefault();
     if (!product || !selectedVariant || !paymentMethod) return;
 
-    // Client-side validation
     if (!customerName.trim() || customerName.trim().length < 2) {
       setError('Nama minimal 2 karakter');
       return;
@@ -129,218 +129,270 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Modal */}
+      {/* Modal Card */}
       <div
         ref={modalRef}
-        className="relative w-full sm:max-w-lg max-h-[90vh] overflow-y-auto bg-surface-light border border-surface-border rounded-t-2xl sm:rounded-2xl animate-fade-in-up"
+        className="relative w-full sm:max-w-lg max-h-[92vh] overflow-y-auto bg-[#0f131f] border border-white/10 rounded-t-3xl sm:rounded-3xl shadow-2xl shadow-indigo-500/10 animate-fade-in-up"
       >
+        {/* Decorative Top Gradient Bar */}
+        <div className="h-1.5 w-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-purple-500 rounded-t-3xl" />
+
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between p-4 sm:p-5 border-b border-surface-border bg-surface-light/95 backdrop-blur-sm rounded-t-2xl">
-          <h2 className="text-lg font-semibold text-text-primary">
-            {step === 'success' ? 'Pesanan Berhasil' : `Pesan ${product.name}`}
-          </h2>
+        <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b border-white/10 bg-[#0f131f]/95 backdrop-blur-md">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-white tracking-tight">
+                {step === 'success' ? 'Pesanan Berhasil!' : `Pesan ${product.name}`}
+              </h2>
+              <p className="text-xs text-slate-400">Proses instan & garansi resmi 100%</p>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-surface-lighter transition-colors cursor-pointer"
+            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer"
             aria-label="Tutup modal"
           >
-            <X className="w-5 h-5 text-text-secondary" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-4 sm:p-5">
+        {/* Modal Body */}
+        <div className="p-5 sm:p-6">
           {/* Success State */}
           {step === 'success' && result && (
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success/10 mb-2">
-                <CheckCircle className="w-8 h-8 text-success" />
+            <div className="text-center py-6 space-y-5">
+              <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/30 rounded-2xl flex items-center justify-center mx-auto text-emerald-400 animate-bounce">
+                <CheckCircle2 className="w-10 h-10" />
               </div>
               <div>
-                <p className="text-lg font-semibold text-text-primary mb-1">Pesanan Dibuat!</p>
-                <p className="text-sm text-text-secondary">
-                  Segera lakukan pembayaran sebelum pesanan kedaluwarsa.
+                <h3 className="text-xl font-bold text-white mb-1">Pesanan Siap Dibayar</h3>
+                <p className="text-sm text-slate-400 max-w-sm mx-auto">
+                  Silakan selesaikan pembayaran untuk memproses akun Anda.
                 </p>
               </div>
-              <div className="bg-surface rounded-xl p-4 text-left space-y-2">
+
+              <div className="bg-[#171d2e] border border-white/10 rounded-2xl p-4 text-left space-y-2.5 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-text-secondary text-sm">Order ID</span>
-                  <span className="text-text-primary text-sm font-mono">{result.orderId}</span>
+                  <span className="text-slate-400">Order ID:</span>
+                  <span className="font-mono font-bold text-cyan-400">{result.orderId}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-text-secondary text-sm">Total Transfer</span>
-                  <span className="text-nexai-400 font-bold">{formatRupiah(result.totalAmount)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-text-secondary text-sm">Kode Unik</span>
-                  <span className="text-warning font-mono">{result.uniqueCode}</span>
+                  <span className="text-slate-400">Total Pembayaran:</span>
+                  <span className="font-bold text-emerald-400">{formatRupiah(result.totalAmount)}</span>
                 </div>
               </div>
+
               <a
                 href={`/invoice/${result.orderId}?token=${result.invoiceToken}`}
-                className="block w-full bg-nexai-600 hover:bg-nexai-500 text-white text-center font-medium py-3 rounded-xl transition-colors"
+                className="block w-full bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-500/25 transition-all text-center"
               >
-                Lihat Invoice
+                Buka Tagihan & Pembayaran →
               </a>
             </div>
           )}
 
           {/* Error State */}
           {step === 'error' && (
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-danger/10 mb-2">
-                <AlertCircle className="w-8 h-8 text-danger" />
+            <div className="text-center py-6 space-y-4">
+              <div className="w-14 h-14 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center mx-auto text-rose-400">
+                <AlertCircle className="w-8 h-8" />
               </div>
-              <div>
-                <p className="text-lg font-semibold text-text-primary mb-1">Gagal Membuat Pesanan</p>
-                <p className="text-sm text-danger">{error}</p>
-              </div>
+              <p className="text-rose-400 text-sm font-medium">{error}</p>
               <button
                 onClick={() => {
                   setStep('form');
                   idempotencyKeyRef.current = crypto.randomUUID();
                 }}
-                className="w-full bg-surface-lighter hover:bg-surface-border text-text-primary font-medium py-3 rounded-xl transition-colors cursor-pointer"
+                className="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl transition-all"
               >
                 Coba Lagi
               </button>
             </div>
           )}
 
-          {/* Submitting State */}
+          {/* Loading State with Shimmer */}
           {step === 'submitting' && (
             <div className="text-center py-12 space-y-4">
-              <Loader2 className="w-10 h-10 text-nexai-500 animate-spin mx-auto" />
-              <p className="text-text-secondary">Memproses pesanan...</p>
+              <div className="relative w-14 h-14 mx-auto">
+                <div className="absolute inset-0 rounded-full border-4 border-indigo-500/20 border-t-indigo-500 animate-spin" />
+                <div className="absolute inset-2 rounded-full border-4 border-cyan-400/20 border-b-cyan-400 animate-spin-slow" />
+              </div>
+              <p className="text-slate-300 font-medium">Memproses Pesanan Anda...</p>
+              <p className="text-xs text-slate-500">Menyiapkan rincian tagihan & kode unik</p>
             </div>
           )}
 
-          {/* Form */}
+          {/* Main Form */}
           {step === 'form' && (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Variant */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Variant Selector Cards */}
               <div>
-                <label htmlFor="variant" className="block text-sm font-medium text-text-secondary mb-1.5">
-                  Pilih Varian
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  1. Pilih Paket / Varian
                 </label>
-                <select
-                  id="variant"
-                  value={selectedVariant}
-                  onChange={(e) => setSelectedVariant(e.target.value)}
-                  required
-                  className="w-full bg-surface border border-surface-border rounded-xl px-4 py-3 text-text-primary text-sm focus:outline-none focus:border-nexai-500 transition-colors appearance-none cursor-pointer"
-                >
-                  <option value="">-- Pilih Varian --</option>
-                  {activeVariants.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.name} — {formatRupiah(v.price)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Name */}
-              <div>
-                <label htmlFor="customerName" className="block text-sm font-medium text-text-secondary mb-1.5">
-                  Nama Lengkap
-                </label>
-                <input
-                  id="customerName"
-                  type="text"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  required
-                  minLength={2}
-                  maxLength={100}
-                  placeholder="Masukkan nama lengkap"
-                  className="w-full bg-surface border border-surface-border rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-nexai-500 transition-colors"
-                />
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label htmlFor="customerPhone" className="block text-sm font-medium text-text-secondary mb-1.5">
-                  Nomor WhatsApp
-                </label>
-                <input
-                  id="customerPhone"
-                  type="tel"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  required
-                  placeholder="08xxxxxxxxxx"
-                  className="w-full bg-surface border border-surface-border rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-nexai-500 transition-colors"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label htmlFor="customerEmail" className="block text-sm font-medium text-text-secondary mb-1.5">
-                  Email
-                </label>
-                <input
-                  id="customerEmail"
-                  type="email"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  required
-                  placeholder="email@contoh.com"
-                  className="w-full bg-surface border border-surface-border rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-nexai-500 transition-colors"
-                />
-              </div>
-
-              {/* Payment Method */}
-              <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">
-                  Metode Pembayaran
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {paymentMethods.map((pm) => (
-                    <button
-                      key={pm.method}
-                      type="button"
-                      onClick={() => setPaymentMethod(pm.method)}
-                      className={`p-3 rounded-xl border text-sm font-medium transition-all cursor-pointer ${
-                        paymentMethod === pm.method
-                          ? 'border-nexai-500 bg-nexai-600/10 text-nexai-400'
-                          : 'border-surface-border bg-surface hover:border-surface-lighter text-text-secondary'
-                      }`}
-                    >
-                      {pm.label}
-                    </button>
-                  ))}
+                <div className="grid grid-cols-1 gap-2.5">
+                  {activeVariants.map((v) => {
+                    const isSelected = selectedVariant === v.id;
+                    return (
+                      <div
+                        key={v.id}
+                        onClick={() => setSelectedVariant(v.id)}
+                        className={`group relative flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-indigo-600/15 border-indigo-500 shadow-md shadow-indigo-500/10'
+                            : 'bg-[#141a29] border-white/5 hover:border-white/15 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                              isSelected ? 'border-indigo-400 bg-indigo-500' : 'border-slate-600'
+                            }`}
+                          >
+                            {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          </div>
+                          <span className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                            {v.name}
+                          </span>
+                        </div>
+                        <span className={`text-sm font-bold ${isSelected ? 'text-cyan-400' : 'text-indigo-400'}`}>
+                          {formatRupiah(v.price)}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Price Summary */}
+              {/* Customer Information Inputs */}
+              <div className="space-y-3 pt-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  2. Informasi Pemesan
+                </label>
+
+                <div>
+                  <input
+                    id="customerName"
+                    type="text"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    required
+                    minLength={2}
+                    maxLength={100}
+                    placeholder="Nama Lengkap"
+                    className="w-full bg-[#141a29] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    id="customerPhone"
+                    type="tel"
+                    value={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    required
+                    placeholder="Nomor WhatsApp (cth: 085157746677)"
+                    className="w-full bg-[#141a29] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    id="customerEmail"
+                    type="email"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                    required
+                    placeholder="Alamat Email (untuk pengiriman akses)"
+                    className="w-full bg-[#141a29] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Payment Method Options with Bank Logos */}
+              <div className="pt-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  3. Metode Pembayaran
+                </label>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {paymentMethods.map((pm) => {
+                    const isSelected = paymentMethod === pm.method;
+                    return (
+                      <button
+                        key={pm.method}
+                        type="button"
+                        onClick={() => setPaymentMethod(pm.method)}
+                        className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-indigo-600/15 border-indigo-500 ring-1 ring-indigo-500 shadow-md shadow-indigo-500/10'
+                            : 'bg-[#141a29] border-white/5 hover:border-white/15'
+                        }`}
+                      >
+                        {/* Logo Container with White Badge */}
+                        <div className="w-12 h-9 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 border border-slate-200 shadow-sm">
+                          {pm.logo ? (
+                            <Image
+                              src={pm.logo}
+                              alt={pm.label}
+                              width={40}
+                              height={24}
+                              className="object-contain max-h-6 w-auto"
+                            />
+                          ) : (
+                            <CreditCard className="w-5 h-5 text-slate-700" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                            {pm.method}
+                          </p>
+                          <p className="text-[10px] text-slate-400 truncate">
+                            {pm.method === 'QRIS' ? 'Instant QR' : 'Transfer Bank'}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Price & Summary Card */}
               {selectedVariantData && (
-                <div className="bg-surface rounded-xl p-4 border border-surface-border">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-text-secondary">Harga</span>
-                    <span className="text-lg font-bold text-nexai-400">
-                      {formatRupiah(selectedVariantData.price)}
-                    </span>
+                <div className="bg-[#141a29] border border-white/10 rounded-xl p-4 flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-slate-400 block">Total Estimasi</span>
+                    <span className="text-xs text-amber-400 font-medium">+ Kode unik acak</span>
                   </div>
-                  <p className="text-xs text-text-muted mt-1">+ kode unik akan ditambahkan saat checkout</p>
+                  <span className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                    {formatRupiah(selectedVariantData.price)}
+                  </span>
                 </div>
               )}
 
-              {/* Error message */}
+              {/* Error Box */}
               {error && (
-                <p className="text-sm text-danger bg-danger/10 p-3 rounded-xl">{error}</p>
+                <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  {error}
+                </div>
               )}
 
-              {/* Submit */}
+              {/* Submit CTA */}
               <button
                 type="submit"
                 disabled={!selectedVariant || !paymentMethod || !customerName || !customerPhone || !customerEmail}
-                className="w-full bg-nexai-600 hover:bg-nexai-500 disabled:bg-surface-lighter disabled:text-text-muted disabled:cursor-not-allowed text-white font-medium py-3.5 rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-indigo-600 via-cyan-600 to-indigo-600 hover:from-indigo-500 hover:to-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-500/25 transition-all cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2"
               >
-                Buat Pesanan
+                <ShieldCheck className="w-5 h-5" />
+                Lanjutkan Pembayaran
               </button>
             </form>
           )}

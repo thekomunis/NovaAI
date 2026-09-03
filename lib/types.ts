@@ -48,6 +48,7 @@ export interface PaymentInfo {
   account?: string;
   name?: string;
   image?: string;
+  logo?: string;
 }
 
 export interface SocialProofEvent {

@@ -3,9 +3,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  LogOut, Search, Loader2, CheckCircle, Clock, Package,
+  LogOut, Search, Loader2, CheckCircle2, Clock, Package,
   ShoppingCart, XCircle, AlertTriangle, ChevronLeft, ChevronRight,
-  TrendingUp, DollarSign, BarChart3, Eye, X,
+  TrendingUp, DollarSign, BarChart3, Eye, X, MessageCircle, Sparkles, Filter
 } from 'lucide-react';
 import type { Order, OrderStatus } from '@/lib/types';
 import { formatRupiah, formatDate } from '@/lib/utils';
@@ -28,13 +28,13 @@ interface AnalyticsData {
   dailyRevenue: { date: string; revenue: number; orders: number }[];
 }
 
-const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: React.ComponentType<{ className?: string }> }> = {
-  PENDING: { label: 'Pending', color: 'text-warning', icon: Clock },
-  PAID: { label: 'Paid', color: 'text-success', icon: CheckCircle },
-  PROCESSING: { label: 'Processing', color: 'text-nexai-400', icon: Package },
-  COMPLETED: { label: 'Completed', color: 'text-success', icon: CheckCircle },
-  CANCELLED: { label: 'Cancelled', color: 'text-danger', icon: XCircle },
-  EXPIRED: { label: 'Expired', color: 'text-text-muted', icon: AlertTriangle },
+const STATUS_CONFIG: Record<OrderStatus, { label: string; bg: string; text: string; border: string; icon: React.ComponentType<{ className?: string }> }> = {
+  PENDING: { label: 'Pending Transfer', bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20', icon: Clock },
+  PAID: { label: 'Paid / Terbayar', bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20', icon: CheckCircle2 },
+  PROCESSING: { label: 'Sedang Diproses', bg: 'bg-indigo-500/10', text: 'text-indigo-400', border: 'border-indigo-500/20', icon: Package },
+  COMPLETED: { label: 'Selesai', bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/20', icon: CheckCircle2 },
+  CANCELLED: { label: 'Dibatalkan', bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/20', icon: XCircle },
+  EXPIRED: { label: 'Kedaluwarsa', bg: 'bg-slate-500/10', text: 'text-slate-400', border: 'border-slate-500/20', icon: AlertTriangle },
 };
 
 const VALID_TRANSITIONS: Record<string, OrderStatus[]> = {
@@ -111,283 +111,397 @@ export function AdminDashboard() {
   const maxRevenue = analytics ? Math.max(...analytics.dailyRevenue.map(d => d.revenue), 1) : 1;
 
   return (
-    <div className="min-h-screen bg-surface">
-      <header className="bg-surface-light border-b border-surface-border sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-text-primary">
-            Nova<span className="text-nexai-500">AI</span>{' '}
-            <span className="text-text-secondary font-normal text-sm">Admin</span>
-          </h1>
+    <div className="min-h-screen bg-[#07090e] text-slate-100 pb-16">
+      {/* Executive Header */}
+      <header className="bg-[#0f131f]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-indigo-500/20">
+              N
+            </span>
+            <h1 className="text-base font-bold text-white tracking-tight">
+              Nova<span className="text-cyan-400">AI</span> <span className="text-xs font-normal text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-md ml-1">Admin Panel</span>
+            </h1>
+          </div>
+
           <div className="flex items-center gap-4">
-            <div className="flex bg-surface rounded-lg p-0.5 border border-surface-border">
-              <button onClick={() => setTab('orders')} className={`text-xs px-3 py-1.5 rounded-md transition-colors cursor-pointer ${tab === 'orders' ? 'bg-nexai-600 text-white' : 'text-text-secondary hover:text-text-primary'}`}>
-                <ShoppingCart className="w-3.5 h-3.5 inline mr-1" />Orders
+            <div className="flex bg-[#141a29] rounded-xl p-1 border border-white/10">
+              <button
+                onClick={() => setTab('orders')}
+                className={`text-xs font-semibold px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  tab === 'orders' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <ShoppingCart className="w-3.5 h-3.5 inline mr-1.5" />Orders
               </button>
-              <button onClick={() => setTab('analytics')} className={`text-xs px-3 py-1.5 rounded-md transition-colors cursor-pointer ${tab === 'analytics' ? 'bg-nexai-600 text-white' : 'text-text-secondary hover:text-text-primary'}`}>
-                <BarChart3 className="w-3.5 h-3.5 inline mr-1" />Analytics
+              <button
+                onClick={() => setTab('analytics')}
+                className={`text-xs font-semibold px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  tab === 'analytics' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <BarChart3 className="w-3.5 h-3.5 inline mr-1.5" />Analytics
               </button>
             </div>
-            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors cursor-pointer">
-              <LogOut className="w-4 h-4" /><span className="hidden sm:inline">Logout</span>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-xs font-semibold text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 px-3.5 py-2 rounded-xl transition-all cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Analytics Tab */}
         {tab === 'analytics' && analytics && (
           <div className="space-y-6 animate-fade-in-up">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Revenue Hari Ini', value: formatRupiah(analytics.revenue.today), icon: DollarSign, color: 'text-success' },
-                { label: 'Revenue Minggu Ini', value: formatRupiah(analytics.revenue.week), icon: TrendingUp, color: 'text-nexai-400' },
-                { label: 'Revenue Bulan Ini', value: formatRupiah(analytics.revenue.month), icon: BarChart3, color: 'text-nexai-300' },
-                { label: 'Total Revenue', value: formatRupiah(analytics.revenue.total), icon: DollarSign, color: 'text-warning' },
+                { label: 'Revenue Hari Ini', value: formatRupiah(analytics.revenue.today), icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+                { label: 'Revenue Minggu Ini', value: formatRupiah(analytics.revenue.week), icon: TrendingUp, color: 'text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/20' },
+                { label: 'Revenue Bulan Ini', value: formatRupiah(analytics.revenue.month), icon: BarChart3, color: 'text-indigo-400', bg: 'bg-indigo-500/10 border-indigo-500/20' },
+                { label: 'Total Revenue', value: formatRupiah(analytics.revenue.total), icon: Sparkles, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20' },
               ].map(s => (
-                <div key={s.label} className="bg-surface-light border border-surface-border rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-1"><s.icon className={`w-4 h-4 ${s.color}`} /><span className="text-xs text-text-muted">{s.label}</span></div>
-                  <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
+                <div key={s.label} className={`bg-[#0f131f] border border-white/10 rounded-2xl p-5 shadow-xl`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className={`p-2 rounded-lg ${s.bg} ${s.color}`}>
+                      <s.icon className="w-4 h-4" />
+                    </div>
+                    <span className="text-xs text-slate-400 font-medium">{s.label}</span>
+                  </div>
+                  <p className={`text-xl sm:text-2xl font-extrabold ${s.color}`}>{s.value}</p>
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-surface-light border border-surface-border rounded-xl p-4 text-center">
-                <p className="text-2xl font-bold text-text-primary">{analytics.orders.today}</p>
-                <p className="text-xs text-text-muted">Pesanan Hari Ini</p>
+
+            {/* Quick Metrics */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-[#0f131f] border border-white/10 rounded-2xl p-5 text-center shadow-xl">
+                <p className="text-3xl font-black text-white">{analytics.orders.today}</p>
+                <p className="text-xs text-slate-400 mt-1 font-medium">Pesanan Hari Ini</p>
               </div>
-              <div className="bg-surface-light border border-surface-border rounded-xl p-4 text-center">
-                <p className="text-2xl font-bold text-text-primary">{analytics.orders.paid}</p>
-                <p className="text-xs text-text-muted">Total Terbayar</p>
+              <div className="bg-[#0f131f] border border-white/10 rounded-2xl p-5 text-center shadow-xl">
+                <p className="text-3xl font-black text-emerald-400">{analytics.orders.paid}</p>
+                <p className="text-xs text-slate-400 mt-1 font-medium">Total Pesanan Sukses</p>
               </div>
-              <div className="bg-surface-light border border-surface-border rounded-xl p-4 text-center">
-                <p className="text-2xl font-bold text-nexai-400">{analytics.orders.conversionRate}%</p>
-                <p className="text-xs text-text-muted">Conversion Rate</p>
+              <div className="bg-[#0f131f] border border-white/10 rounded-2xl p-5 text-center shadow-xl">
+                <p className="text-3xl font-black text-cyan-400">{analytics.orders.conversionRate}%</p>
+                <p className="text-xs text-slate-400 mt-1 font-medium">Conversion Rate</p>
               </div>
             </div>
+
             {/* Revenue Chart */}
-            <div className="bg-surface-light border border-surface-border rounded-xl p-5">
-              <h3 className="text-sm font-semibold text-text-secondary mb-4">Revenue 7 Hari Terakhir</h3>
-              <div className="flex items-end gap-2 h-40">
+            <div className="bg-[#0f131f] border border-white/10 rounded-2xl p-6 shadow-xl">
+              <h3 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-cyan-400" />
+                Revenue 7 Hari Terakhir
+              </h3>
+              <div className="flex items-end gap-3 h-48 pt-4">
                 {analytics.dailyRevenue.map((d, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <span className="text-[10px] text-text-muted">{d.revenue > 0 ? formatRupiah(d.revenue).replace('Rp', '').trim() : '-'}</span>
-                    <div className="w-full bg-surface-lighter rounded-t-md overflow-hidden" style={{ height: '120px' }}>
-                      <div className="w-full bg-nexai-600/80 rounded-t-md transition-all duration-700 mt-auto" style={{ height: `${(d.revenue / maxRevenue) * 100}%`, marginTop: `${100 - (d.revenue / maxRevenue) * 100}%` }} />
+                  <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                    <span className="text-[10px] font-bold text-cyan-400">{d.revenue > 0 ? formatRupiah(d.revenue).replace('Rp', '').trim() : '-'}</span>
+                    <div className="w-full bg-[#141a29] rounded-t-xl overflow-hidden h-36 relative">
+                      <div
+                        className="w-full bg-gradient-to-t from-indigo-600 to-cyan-500 rounded-t-xl transition-all duration-700 absolute bottom-0"
+                        style={{ height: `${(d.revenue / maxRevenue) * 100}%` }}
+                      />
                     </div>
-                    <span className="text-[10px] text-text-muted">{d.date}</span>
+                    <span className="text-[11px] font-mono text-slate-400">{d.date}</span>
                   </div>
                 ))}
               </div>
             </div>
+
             {/* Product Stats */}
-            <div className="bg-surface-light border border-surface-border rounded-xl p-5">
-              <h3 className="text-sm font-semibold text-text-secondary mb-4">Produk Terlaris</h3>
+            <div className="bg-[#0f131f] border border-white/10 rounded-2xl p-6 shadow-xl">
+              <h3 className="text-sm font-bold text-white mb-4">Performa Produk AI</h3>
               <div className="space-y-3">
                 {analytics.productStats.map(p => (
-                  <div key={p.name} className="flex items-center justify-between">
-                    <div><p className="text-sm text-text-primary font-medium">{p.name}</p><p className="text-xs text-text-muted">{p.count} pesanan</p></div>
-                    <p className="text-sm font-medium text-nexai-400">{formatRupiah(p.revenue)}</p>
+                  <div key={p.name} className="flex items-center justify-between bg-[#141a29] border border-white/5 rounded-xl p-4">
+                    <div>
+                      <p className="text-sm font-bold text-white">{p.name}</p>
+                      <p className="text-xs text-slate-400">{p.count} pesanan terverifikasi</p>
+                    </div>
+                    <p className="text-base font-extrabold text-cyan-400">{formatRupiah(p.revenue)}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
         )}
+
         {tab === 'analytics' && !analytics && (
-          <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 text-nexai-500 animate-spin" /></div>
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+          </div>
         )}
 
         {/* Orders Tab */}
-        {tab === 'orders' && (<>
-          {stats && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-              {([
-                { key: 'total', label: 'Total', icon: ShoppingCart, color: 'text-text-primary' },
-                { key: 'PENDING', label: 'Pending', icon: Clock, color: 'text-warning' },
-                { key: 'PAID', label: 'Paid', icon: CheckCircle, color: 'text-success' },
-                { key: 'PROCESSING', label: 'Processing', icon: Package, color: 'text-nexai-400' },
-                { key: 'COMPLETED', label: 'Completed', icon: CheckCircle, color: 'text-green-400' },
-                { key: 'EXPIRED', label: 'Expired', icon: AlertTriangle, color: 'text-text-muted' },
-              ] as const).map((s) => (
-                <div key={s.key} className="bg-surface-light border border-surface-border rounded-xl p-3.5">
-                  <div className="flex items-center gap-2 mb-1"><s.icon className={`w-4 h-4 ${s.color}`} /><span className="text-xs text-text-muted">{s.label}</span></div>
-                  <p className={`text-xl font-bold ${s.color}`}>{stats[s.key as keyof DashboardStats]}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className="flex flex-col sm:flex-row gap-3 mb-5">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-              <input type="text" placeholder="Cari order ID, nama, email..." value={search}
-                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="w-full bg-surface-light border border-surface-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-nexai-500 transition-colors" />
-            </div>
-            <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-              className="bg-surface-light border border-surface-border rounded-lg px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-nexai-500 cursor-pointer">
-              <option value="ALL">Semua Status</option>
-              <option value="PENDING">Pending</option><option value="PAID">Paid</option>
-              <option value="PROCESSING">Processing</option><option value="COMPLETED">Completed</option>
-              <option value="EXPIRED">Expired</option>
-            </select>
-            <select value={productFilter} onChange={(e) => { setProductFilter(e.target.value); setPage(1); }}
-              className="bg-surface-light border border-surface-border rounded-lg px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-nexai-500 cursor-pointer">
-              <option value="ALL">Semua Produk</option>
-              {products.map((p) => (<option key={p.slug} value={p.slug}>{p.name}</option>))}
-            </select>
-            <select value={paymentFilter} onChange={(e) => { setPaymentFilter(e.target.value); setPage(1); }}
-              className="bg-surface-light border border-surface-border rounded-lg px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-nexai-500 cursor-pointer">
-              <option value="ALL">Semua Pembayaran</option>
-              <option value="BCA">BCA</option><option value="MANDIRI">Mandiri</option>
-              <option value="SEABANK">SeaBank</option><option value="QRIS">QRIS</option>
-            </select>
-          </div>
-
-          <div className="bg-surface-light border border-surface-border rounded-xl overflow-hidden">
-            {loading ? (
-              <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 text-nexai-500 animate-spin" /></div>
-            ) : !data?.orders.length ? (
-              <div className="text-center py-16"><p className="text-text-muted text-sm">Tidak ada pesanan ditemukan</p></div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-surface-border text-text-muted text-xs uppercase tracking-wider">
-                      <th className="text-left px-4 py-3 font-medium">Order ID</th>
-                      <th className="text-left px-4 py-3 font-medium">Customer</th>
-                      <th className="text-left px-4 py-3 font-medium">Produk</th>
-                      <th className="text-right px-4 py-3 font-medium">Total</th>
-                      <th className="text-center px-4 py-3 font-medium">Status</th>
-                      <th className="text-left px-4 py-3 font-medium hidden md:table-cell">Created</th>
-                      <th className="text-center px-4 py-3 font-medium">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.orders.map((order) => {
-                      const statusCfg = STATUS_CONFIG[order.status as OrderStatus];
-                      return (
-                        <tr key={order.id} className="border-b border-surface-border/50 hover:bg-surface/50 transition-colors">
-                          <td className="px-4 py-3 font-mono text-xs text-nexai-400 whitespace-nowrap">{order.order_id}</td>
-                          <td className="px-4 py-3"><p className="text-text-primary text-sm">{order.customer_name}</p><p className="text-text-muted text-xs">{order.customer_phone}</p></td>
-                          <td className="px-4 py-3 text-text-primary whitespace-nowrap">{order.product_name}</td>
-                          <td className="px-4 py-3 text-right font-medium text-text-primary whitespace-nowrap">{formatRupiah(order.total_amount)}</td>
-                          <td className="px-4 py-3 text-center">
-                            <span className={`inline-flex items-center gap-1 text-xs font-medium ${statusCfg.color}`}>
-                              <statusCfg.icon className="w-3 h-3" />{statusCfg.label}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-text-muted text-xs whitespace-nowrap hidden md:table-cell">{formatDate(order.created_at)}</td>
-                          <td className="px-4 py-3 text-center">
-                            <button onClick={() => { setSelectedOrder(order); setAdminNote(order.admin_note || ''); }}
-                              className="text-xs bg-surface-lighter hover:bg-surface-border text-text-secondary px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
-                              <Eye className="w-3 h-3 inline mr-1" />Detail
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+        {tab === 'orders' && (
+          <>
+            {/* Quick Status Stats Badges */}
+            {stats && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+                {([
+                  { key: 'total', label: 'Total Order', icon: ShoppingCart, color: 'text-white' },
+                  { key: 'PENDING', label: 'Pending', icon: Clock, color: 'text-amber-400' },
+                  { key: 'PAID', label: 'Paid', icon: CheckCircle2, color: 'text-emerald-400' },
+                  { key: 'PROCESSING', label: 'Processing', icon: Package, color: 'text-indigo-400' },
+                  { key: 'COMPLETED', label: 'Completed', icon: CheckCircle2, color: 'text-cyan-400' },
+                  { key: 'EXPIRED', label: 'Expired', icon: AlertTriangle, color: 'text-slate-500' },
+                ] as const).map((s) => (
+                  <div key={s.key} className="bg-[#0f131f] border border-white/10 rounded-2xl p-4 shadow-lg">
+                    <div className="flex items-center gap-2 mb-1">
+                      <s.icon className={`w-4 h-4 ${s.color}`} />
+                      <span className="text-xs text-slate-400 font-medium">{s.label}</span>
+                    </div>
+                    <p className={`text-2xl font-extrabold ${s.color}`}>{stats[s.key as keyof DashboardStats]}</p>
+                  </div>
+                ))}
               </div>
             )}
-            {data && data.totalPages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-surface-border">
-                <p className="text-xs text-text-muted">Halaman {data.page} dari {data.totalPages} ({data.total} pesanan)</p>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}
-                    className="p-1.5 rounded-lg bg-surface-lighter hover:bg-surface-border disabled:opacity-30 transition-colors cursor-pointer" aria-label="Sebelumnya">
-                    <ChevronLeft className="w-4 h-4 text-text-secondary" />
-                  </button>
-                  <button onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))} disabled={page >= data.totalPages}
-                    className="p-1.5 rounded-lg bg-surface-lighter hover:bg-surface-border disabled:opacity-30 transition-colors cursor-pointer" aria-label="Selanjutnya">
-                    <ChevronRight className="w-4 h-4 text-text-secondary" />
-                  </button>
-                </div>
+
+            {/* Filter Bar */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Cari order ID, nama, WA..."
+                  value={search}
+                  onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                  className="w-full bg-[#0f131f] border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
+                />
               </div>
-            )}
-          </div>
-        </>)}
+
+              <div className="flex gap-2 flex-wrap sm:flex-nowrap">
+                <select
+                  value={statusFilter}
+                  onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+                  className="bg-[#0f131f] border border-white/10 rounded-xl px-3 py-3 text-xs font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  <option value="ALL">Semua Status</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="PAID">Paid</option>
+                  <option value="PROCESSING">Processing</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="EXPIRED">Expired</option>
+                </select>
+
+                <select
+                  value={productFilter}
+                  onChange={(e) => { setProductFilter(e.target.value); setPage(1); }}
+                  className="bg-[#0f131f] border border-white/10 rounded-xl px-3 py-3 text-xs font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  <option value="ALL">Semua Produk</option>
+                  {products.map((p) => (<option key={p.slug} value={p.slug}>{p.name}</option>))}
+                </select>
+
+                <select
+                  value={paymentFilter}
+                  onChange={(e) => { setPaymentFilter(e.target.value); setPage(1); }}
+                  className="bg-[#0f131f] border border-white/10 rounded-xl px-3 py-3 text-xs font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                >
+                  <option value="ALL">Semua Pembayaran</option>
+                  <option value="BCA">BCA</option>
+                  <option value="MANDIRI">Mandiri</option>
+                  <option value="SEABANK">SeaBank</option>
+                  <option value="QRIS">QRIS</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Orders Table */}
+            <div className="bg-[#0f131f] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-20 space-y-3">
+                  <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+                  <p className="text-xs text-slate-400">Memuat data pesanan...</p>
+                </div>
+              ) : !data?.orders.length ? (
+                <div className="text-center py-20">
+                  <p className="text-slate-400 text-sm">Tidak ada pesanan ditemukan</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-white/10 bg-[#141a29]/50 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        <th className="text-left px-5 py-4">Order ID</th>
+                        <th className="text-left px-5 py-4">Customer</th>
+                        <th className="text-left px-5 py-4">Produk</th>
+                        <th className="text-right px-5 py-4">Total</th>
+                        <th className="text-center px-5 py-4">Status</th>
+                        <th className="text-left px-5 py-4 hidden md:table-cell">Waktu</th>
+                        <th className="text-center px-5 py-4">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {data.orders.map((order) => {
+                        const statusCfg = STATUS_CONFIG[order.status as OrderStatus];
+                        return (
+                          <tr key={order.id} className="hover:bg-white/[0.02] transition-colors">
+                            <td className="px-5 py-4 font-mono text-xs font-bold text-cyan-400 whitespace-nowrap">
+                              {order.order_id}
+                            </td>
+                            <td className="px-5 py-4">
+                              <p className="text-white font-bold text-xs">{order.customer_name}</p>
+                              <p className="text-slate-400 text-[11px] font-mono">{order.customer_phone}</p>
+                            </td>
+                            <td className="px-5 py-4 whitespace-nowrap">
+                              <p className="text-white font-semibold text-xs">{order.product_name}</p>
+                              <p className="text-slate-400 text-[11px]">{order.variant_name}</p>
+                            </td>
+                            <td className="px-5 py-4 text-right font-extrabold text-emerald-400 whitespace-nowrap">
+                              {formatRupiah(order.total_amount)}
+                            </td>
+                            <td className="px-5 py-4 text-center">
+                              <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full border ${statusCfg.bg} ${statusCfg.text} ${statusCfg.border}`}>
+                                <statusCfg.icon className="w-3.5 h-3.5" />
+                                {statusCfg.label}
+                              </span>
+                            </td>
+                            <td className="px-5 py-4 text-slate-400 text-xs whitespace-nowrap hidden md:table-cell">
+                              {formatDate(order.created_at)}
+                            </td>
+                            <td className="px-5 py-4 text-center">
+                              <button
+                                onClick={() => { setSelectedOrder(order); setAdminNote(order.admin_note || ''); }}
+                                className="text-xs bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-indigo-400 font-semibold px-3.5 py-1.5 rounded-xl transition-all cursor-pointer"
+                              >
+                                <Eye className="w-3.5 h-3.5 inline mr-1" /> Detail
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* Pagination */}
+              {data && data.totalPages > 1 && (
+                <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 bg-[#141a29]/30">
+                  <p className="text-xs text-slate-400">
+                    Halaman {data.page} dari {data.totalPages} ({data.total} total order)
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={page <= 1}
+                      className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer"
+                    >
+                      <ChevronLeft className="w-4 h-4 text-slate-300" />
+                    </button>
+                    <button
+                      onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
+                      disabled={page >= data.totalPages}
+                      className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer"
+                    >
+                      <ChevronRight className="w-4 h-4 text-slate-300" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </main>
 
       {/* Order Detail Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedOrder(null)} />
-          <div className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto bg-surface-light border border-surface-border rounded-2xl animate-fade-in-up">
-            <div className="sticky top-0 flex items-center justify-between p-5 border-b border-surface-border bg-surface-light/95 backdrop-blur-sm rounded-t-2xl z-10">
-              <h2 className="text-lg font-semibold text-text-primary">Detail Pesanan</h2>
-              <button onClick={() => setSelectedOrder(null)} className="p-2 rounded-lg hover:bg-surface-lighter transition-colors cursor-pointer"><X className="w-5 h-5 text-text-secondary" /></button>
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setSelectedOrder(null)} />
+          <div className="relative w-full max-w-lg max-h-[88vh] overflow-y-auto bg-[#0f131f] border border-white/10 rounded-3xl shadow-2xl animate-fade-in-up">
+            <div className="sticky top-0 flex items-center justify-between p-5 border-b border-white/10 bg-[#0f131f]/95 backdrop-blur-md rounded-t-3xl z-10">
+              <h2 className="text-base font-bold text-white">Detail & Aksi Order #{selectedOrder.order_id}</h2>
+              <button onClick={() => setSelectedOrder(null)} className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
             </div>
-            <div className="p-5 space-y-5">
-              <div className="space-y-2.5 text-sm">
+
+            <div className="p-6 space-y-5">
+              <div className="bg-[#141a29] border border-white/10 rounded-2xl p-4 space-y-2.5 text-xs">
                 {[
                   ['Order ID', selectedOrder.order_id],
-                  ['Customer', selectedOrder.customer_name],
-                  ['Phone', selectedOrder.customer_phone],
+                  ['Nama Customer', selectedOrder.customer_name],
+                  ['WhatsApp', selectedOrder.customer_phone],
                   ['Email', selectedOrder.customer_email],
                   ['Produk', selectedOrder.product_name],
                   ['Varian', selectedOrder.variant_name],
-                  ['Harga', formatRupiah(selectedOrder.price)],
-                  ['Kode Unik', String(selectedOrder.unique_code)],
-                  ['Total', formatRupiah(selectedOrder.total_amount)],
-                  ['Payment', selectedOrder.payment_method],
-                  ['Dibuat', formatDate(selectedOrder.created_at)],
-                  ['Expired', formatDate(selectedOrder.expires_at)],
+                  ['Harga Produk', formatRupiah(selectedOrder.price)],
+                  ['Kode Unik', `+${selectedOrder.unique_code}`],
+                  ['Total Pembayaran', formatRupiah(selectedOrder.total_amount)],
+                  ['Metode Pembayaran', selectedOrder.payment_method],
+                  ['Waktu Dibuat', formatDate(selectedOrder.created_at)],
+                  ['Batas Expired', formatDate(selectedOrder.expires_at)],
                 ].map(([label, val]) => (
-                  <div key={label} className="flex justify-between">
-                    <span className="text-text-muted">{label}</span>
-                    <span className="text-text-primary text-right max-w-[60%] break-all">{val}</span>
+                  <div key={label} className="flex justify-between items-center">
+                    <span className="text-slate-400">{label}</span>
+                    <span className="font-semibold text-slate-200 text-right max-w-[60%] break-all">{val}</span>
                   </div>
                 ))}
-                {selectedOrder.paid_at && (
-                  <div className="flex justify-between"><span className="text-text-muted">Dibayar</span><span className="text-success">{formatDate(selectedOrder.paid_at)}</span></div>
-                )}
               </div>
 
-              {/* Status Badge */}
-              <div className="bg-surface rounded-xl p-4 border border-surface-border">
-                <p className="text-xs text-text-muted mb-2">Status Saat Ini</p>
-                <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${STATUS_CONFIG[selectedOrder.status as OrderStatus].color}`}>
+              {/* Status Section */}
+              <div className="bg-[#141a29] rounded-2xl p-4 border border-white/10">
+                <p className="text-xs text-slate-400 mb-2 font-medium">Status Pesanan Saat Ini:</p>
+                <span className={`inline-flex items-center gap-1.5 text-sm font-bold px-3.5 py-1.5 rounded-full border ${STATUS_CONFIG[selectedOrder.status as OrderStatus].bg} ${STATUS_CONFIG[selectedOrder.status as OrderStatus].text} ${STATUS_CONFIG[selectedOrder.status as OrderStatus].border}`}>
                   {(() => { const Icon = STATUS_CONFIG[selectedOrder.status as OrderStatus].icon; return <Icon className="w-4 h-4" />; })()}
                   {STATUS_CONFIG[selectedOrder.status as OrderStatus].label}
                 </span>
               </div>
 
-              {/* Status Actions */}
+              {/* Status Action Buttons */}
               {VALID_TRANSITIONS[selectedOrder.status]?.length > 0 && (
                 <div>
-                  <p className="text-xs text-text-muted mb-2">Ubah Status</p>
+                  <p className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Ubah Status Order</p>
                   <div className="flex flex-wrap gap-2">
                     {VALID_TRANSITIONS[selectedOrder.status].map((s) => (
-                      <button key={s} onClick={() => handleStatusChange(selectedOrder.order_id, s)}
+                      <button
+                        key={s}
+                        onClick={() => handleStatusChange(selectedOrder.order_id, s)}
                         disabled={confirming === selectedOrder.order_id}
-                        className={`text-xs font-medium px-3 py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50 ${
-                          s === 'PAID' || s === 'COMPLETED' ? 'bg-success/15 hover:bg-success/25 text-success' :
-                          s === 'PROCESSING' ? 'bg-nexai-600/15 hover:bg-nexai-600/25 text-nexai-400' :
-                          'bg-danger/15 hover:bg-danger/25 text-danger'
-                        }`}>
-                        {confirming === selectedOrder.order_id ? <Loader2 className="w-3 h-3 animate-spin inline" /> : s}
+                        className={`text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer disabled:opacity-50 ${
+                          s === 'PAID' || s === 'COMPLETED' ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30' :
+                          s === 'PROCESSING' ? 'bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-400 border border-indigo-500/30' :
+                          'bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 border border-rose-500/30'
+                        }`}
+                      >
+                        {confirming === selectedOrder.order_id ? <Loader2 className="w-3.5 h-3.5 animate-spin inline mr-1" /> : null}
+                        Set {s}
                       </button>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Admin Note */}
+              {/* Admin Note Input */}
               <div>
-                <p className="text-xs text-text-muted mb-2">Catatan Admin</p>
-                <textarea value={adminNote} onChange={(e) => setAdminNote(e.target.value)}
-                  placeholder="Tambahkan catatan internal..." rows={2}
-                  className="w-full bg-surface border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-nexai-500 transition-colors resize-none" />
+                <p className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Catatan Internal Admin</p>
+                <textarea
+                  value={adminNote}
+                  onChange={(e) => setAdminNote(e.target.value)}
+                  placeholder="Isi kredensial akun / catatan khusus..."
+                  rows={2}
+                  className="w-full bg-[#141a29] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-all resize-none"
+                />
               </div>
 
-              {/* WhatsApp */}
-              <a href={`https://wa.me/${selectedOrder.customer_phone}?text=${encodeURIComponent(`Halo ${selectedOrder.customer_name}, ini dari NovaAI Store terkait pesanan ${selectedOrder.order_id}.`)}`}
-                target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-500 text-white font-medium py-3 rounded-xl transition-colors text-sm">
-                WhatsApp Customer
+              {/* Chat WhatsApp Button */}
+              <a
+                href={`https://wa.me/${selectedOrder.customer_phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Halo Kak ${selectedOrder.customer_name}, ini dari Admin NovaAI Store terkait pesanan ${selectedOrder.product_name} (#${selectedOrder.order_id}).`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-all text-xs cursor-pointer shadow-lg shadow-emerald-500/20"
+              >
+                <MessageCircle className="w-4 h-4 fill-current" />
+                Chat Customer via WhatsApp
               </a>
             </div>
           </div>

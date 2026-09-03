@@ -6,26 +6,30 @@ export const SITE_DESCRIPTION = 'Marketplace premium untuk akun dan tools AI ter
 export const paymentMethods: PaymentInfo[] = [
   {
     method: 'BCA',
-    label: 'BCA',
+    label: 'Bank BCA',
     account: '4141224284',
     name: 'STEVEN LIE',
+    logo: '/payments/bca.svg',
   },
   {
     method: 'MANDIRI',
-    label: 'Mandiri',
+    label: 'Bank Mandiri',
     account: '1200013671826',
     name: 'STEVEN LIE',
+    logo: '/payments/mandiri.svg',
   },
   {
     method: 'SEABANK',
     label: 'SeaBank',
     account: '901152172987',
     name: 'STEVEN LIE',
+    logo: '/payments/seabank.svg',
   },
   {
     method: 'QRIS',
-    label: 'QRIS',
+    label: 'QRIS (Semua E-Wallet & M-Banking)',
     image: '/qris.jpg',
+    logo: '/payments/qris.svg',
   },
 ];
 
@@ -34,7 +38,7 @@ export function getPaymentInfo(method: string): PaymentInfo | undefined {
 }
 
 export function getAdminWhatsApp(): string {
-  return process.env.NEXT_PUBLIC_ADMIN_WA || '';
+  return process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
 }
 
 export const ORDER_EXPIRATION_HOURS = 1;

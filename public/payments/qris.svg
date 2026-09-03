@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 100" fill="none">
+  <!-- QRIS Text Logo -->
+  <text x="10" y="72" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="64" fill="#000000" letter-spacing="-2">QRIS</text>
+  <!-- QRIS Square Emblem Accent -->
+  <rect x="230" y="24" width="24" height="24" fill="#ED1C24" rx="4"/>
+  <rect x="236" y="30" width="12" height="12" fill="#FFFFFF" rx="2"/>
+</svg>
