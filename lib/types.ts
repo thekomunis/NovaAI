@@ -75,6 +75,7 @@ export interface OrderCreateResponse {
   totalAmount: number;
   uniqueCode: number;
   expiresAt: string;
+  paymentMethod?: string;
 }
 
 export interface ApiError {

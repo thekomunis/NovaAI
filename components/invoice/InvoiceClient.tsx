@@ -20,6 +20,7 @@ import { formatRupiah, formatDate } from '@/lib/utils';
 import { getPaymentInfo } from '@/lib/config';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { getSupabaseBrowser } from '@/lib/supabase/client';
+import { Loader3D } from '@/components/ui/Loader3D';
 
 interface InvoiceClientProps {
   orderId: string;
@@ -123,11 +124,8 @@ export function InvoiceClient({ orderId, token }: InvoiceClientProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#090a0f] flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-sm bg-[#11131a] border border-white/10 rounded-2xl p-6 text-center space-y-3">
-          <RefreshCw className="w-6 h-6 text-indigo-400 animate-spin mx-auto" />
-          <p className="text-white font-semibold text-sm">Memuat Invoice...</p>
-        </div>
+      <div className="min-h-screen bg-[#07090e] flex flex-col items-center justify-center p-4">
+        <Loader3D size="lg" text="Memuat Invoice Realtime..." />
       </div>
     );
   }
