@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, Zap, ArrowRight, Search, MessageCircle, Lock, Star, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Zap, ArrowRight, Search, MessageCircle, Lock, Star, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { ProductCatalog } from '@/components/catalog/ProductCatalog';
 import { SocialProofWrapper } from '@/components/social-proof/SocialProofWrapper';
+import { ADMIN_WA_NUMBER } from '@/lib/config';
 
 function HeroSection() {
-  const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
-  const cleanWa = adminWa.replace(/[^0-9]/g, '');
+  const cleanWa = ADMIN_WA_NUMBER;
 
   return (
     <section className="relative overflow-hidden pt-20 pb-24 sm:pt-32 sm:pb-36 bg-[#05070c]">
@@ -165,8 +165,8 @@ function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/admin/login" className="hover:text-cyan-400 transition-colors text-slate-500">
-                  Admin Dashboard Login
+                <Link href="/privacy" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5 text-slate-400">
+                  <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Kebijakan Privasi
                 </Link>
               </li>
             </ul>
@@ -211,8 +211,7 @@ function Footer() {
 }
 
 export default function HomePage() {
-  const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '6285157746677';
-  const cleanWa = adminWa.replace(/[^0-9]/g, '');
+  const cleanWa = ADMIN_WA_NUMBER;
 
   return (
     <div className="min-h-screen bg-[#05070c] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white font-sans">
