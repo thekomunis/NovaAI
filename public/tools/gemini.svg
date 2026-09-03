@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="22" fill="#1E1F2A"/>
+  <!-- Google Gemini 4-point Star -->
+  <path d="M50 15C50 34.33 34.33 50 15 50C34.33 50 50 65.67 50 85C50 65.67 65.67 50 85 50C65.67 50 50 34.33 50 15Z" fill="url(#gemini_grad)"/>
+  <defs>
+    <linearGradient id="gemini_grad" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4285F4"/>
+      <stop offset="0.4" stop-color="#9B51E0"/>
+      <stop offset="0.8" stop-color="#E91E63"/>
+      <stop offset="1" stop-color="#FF6D00"/>
+    </linearGradient>
+  </defs>
+</svg>

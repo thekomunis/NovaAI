@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="22" fill="#0B132B"/>
+  <!-- Midjourney Sailboat Logo Mark -->
+  <path d="M22 68L50 22L78 68H22ZM50 38L34 62H66L50 38Z" fill="#00F2FE"/>
+  <path d="M20 74H80" stroke="#00F2FE" stroke-width="4" stroke-linecap="round"/>
+</svg>

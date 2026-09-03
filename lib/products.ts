@@ -1,10 +1,11 @@
-import type { Product } from './types';
+import type { Product, ProductVariant } from './types';
 
 export const products: Product[] = [
   {
     name: 'ChatGPT',
     slug: 'chatgpt',
     image: '/products/chatgpt.jpg',
+    icon: '/tools/chatgpt.svg',
     description: 'Akses ChatGPT Plus untuk produktivitas dan kreativitas tanpa batas.',
     variants: [
       {
@@ -16,10 +17,11 @@ export const products: Product[] = [
     ],
   },
   {
-    name: 'Google AI Pro (Anti Gravity)',
+    name: 'Google AI Pro (Gemini)',
     slug: 'antigravity',
     image: '/products/antigravity.jpg',
-    description: 'Google AI Pro dengan performa tinggi untuk kebutuhan profesional.',
+    icon: '/tools/gemini.svg',
+    description: 'Google AI Pro (Gemini Advanced) dengan performa tinggi untuk kebutuhan profesional.',
     variants: [
       {
         id: 'antigravity-12bln',
@@ -39,6 +41,7 @@ export const products: Product[] = [
     name: 'Claude AI',
     slug: 'claude',
     image: '/products/claude.jpg',
+    icon: '/tools/claude.svg',
     description: 'Claude AI untuk analisis mendalam dan pemrosesan bahasa alami terbaik.',
     variants: [
       {
@@ -59,12 +62,6 @@ export const products: Product[] = [
         price: 80000,
         active: true,
       },
-      {
-        id: 'claude-api-500-1bln',
-        name: 'Claude API Key $500 Balance 1 Bulan - Full Garansi',
-        price: 250000,
-        active: true,
-      },
     ],
   },
 ];
@@ -73,6 +70,6 @@ export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }
 
-export function getVariantById(product: Product, variantId: string) {
+export function getVariantById(product: Product, variantId: string): ProductVariant | undefined {
   return product.variants.find((v) => v.id === variantId);
 }

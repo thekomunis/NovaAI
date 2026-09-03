@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="22" fill="#D97757"/>
+  <!-- Claude Anthropic Sunburst Mark -->
+  <path d="M50 20L54 44L75 29L61 49L85 50L61 51L75 71L54 56L50 80L46 56L25 71L39 51L15 50L39 49L25 29L46 44L50 20Z" fill="white"/>
+</svg>

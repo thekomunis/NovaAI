@@ -13,6 +13,7 @@ export interface Product {
   name: string;
   slug: string;
   image: string;
+  icon?: string;
   description: string;
   variants: ProductVariant[];
 }
