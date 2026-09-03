@@ -5,7 +5,7 @@ export function buildWhatsAppUrl(order: Order): string {
   const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA || '';
   if (!adminWa) return '#';
 
-  const message = `Halo Admin NexAI Store,
+  const message = `Halo Admin NovaAI Store,
 
 Saya sudah melakukan pemesanan:
 

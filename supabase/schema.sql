@@ -1,5 +1,5 @@
 -- ============================================
--- NexAI Store - Database Schema
+-- NovaAI Store - Database Schema
 -- ============================================
 
 -- Order counter sequence (atomic)

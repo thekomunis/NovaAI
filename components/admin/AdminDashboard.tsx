@@ -115,7 +115,7 @@ export function AdminDashboard() {
       <header className="bg-surface-light border-b border-surface-border sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <h1 className="text-lg font-bold text-text-primary">
-            Nex<span className="text-nexai-500">AI</span>{' '}
+            Nova<span className="text-nexai-500">AI</span>{' '}
             <span className="text-text-secondary font-normal text-sm">Admin</span>
           </h1>
           <div className="flex items-center gap-4">
@@ -384,7 +384,7 @@ export function AdminDashboard() {
               </div>
 
               {/* WhatsApp */}
-              <a href={`https://wa.me/${selectedOrder.customer_phone}?text=${encodeURIComponent(`Halo ${selectedOrder.customer_name}, ini dari NexAI Store terkait pesanan ${selectedOrder.order_id}.`)}`}
+              <a href={`https://wa.me/${selectedOrder.customer_phone}?text=${encodeURIComponent(`Halo ${selectedOrder.customer_name}, ini dari NovaAI Store terkait pesanan ${selectedOrder.order_id}.`)}`}
                 target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-500 text-white font-medium py-3 rounded-xl transition-colors text-sm">
                 WhatsApp Customer

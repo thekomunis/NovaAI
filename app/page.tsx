@@ -27,7 +27,7 @@ function HeroSection() {
         <div className="perspective-container mb-6">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text-primary animate-fade-in-up" style={{ animationDelay: '100ms' }}>
             Akses Tools{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nexai-400 to-nexai-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-NovaAI-400 to-NovaAI-600">
               AI Premium
             </span>
             <br className="hidden sm:block" />{' '}
@@ -101,7 +101,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-text-muted">
-            © {new Date().getFullYear()} NexAI Store. All rights reserved.
+            © {new Date().getFullYear()} NovaAI Store. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link href="/track" className="text-sm text-text-muted hover:text-text-secondary transition-colors">
@@ -130,7 +130,7 @@ export default function HomePage() {
       <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-surface-border/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="text-lg font-bold tracking-tight text-text-primary">
-            Nex<span className="text-nexai-500">AI</span>
+            Nova<span className="text-nexai-500">AI</span>
           </Link>
           <nav className="flex items-center gap-4">
             <a href="#products" className="text-sm text-text-secondary hover:text-text-primary transition-colors">

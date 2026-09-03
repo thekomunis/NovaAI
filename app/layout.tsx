@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "NexAI Store - Marketplace AI Tools & Akun Premium",
-    template: "%s | NexAI Store",
+    default: "NovaAI Store - Marketplace AI Tools & Akun Premium",
+    template: "%s | NovaAI Store",
   },
   description:
     "Marketplace premium untuk akun dan tools AI terpercaya. ChatGPT, Claude AI, Google AI Pro dengan harga terbaik dan pelayanan cepat.",
   keywords: ["AI", "ChatGPT", "Claude", "Google AI", "marketplace", "tools AI", "akun premium"],
   openGraph: {
-    title: "NexAI Store - Marketplace AI Tools & Akun Premium",
+    title: "NovaAI Store - Marketplace AI Tools & Akun Premium",
     description:
       "Marketplace premium untuk akun dan tools AI terpercaya. ChatGPT, Claude AI, Google AI Pro dengan harga terbaik.",
     type: "website",

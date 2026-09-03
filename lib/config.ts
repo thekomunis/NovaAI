@@ -1,6 +1,6 @@
 import type { PaymentInfo } from './types';
 
-export const SITE_NAME = 'NexAI Store';
+export const SITE_NAME = 'NovaAI Store';
 export const SITE_DESCRIPTION = 'Marketplace premium untuk akun dan tools AI terpercaya. ChatGPT, Claude AI, Google AI Pro dengan harga terbaik.';
 
 export const paymentMethods: PaymentInfo[] = [

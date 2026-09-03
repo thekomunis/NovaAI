@@ -12,7 +12,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-text-primary mb-1">
-            Nex<span className="text-nexai-500">AI</span> Admin
+            Nova<span className="text-nexai-500">AI</span> Admin
           </h1>
           <p className="text-sm text-text-secondary">Masuk ke dashboard admin</p>
         </div>

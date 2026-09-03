@@ -153,7 +153,7 @@ export function InvoiceClient({ orderId, token }: InvoiceClientProps) {
       <header className="bg-surface-light border-b border-surface-border">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 h-14 flex items-center">
           <Link href="/" className="text-lg font-bold tracking-tight text-text-primary">
-            Nex<span className="text-nexai-500">AI</span>
+            Nova<span className="text-nexai-500">AI</span>
           </Link>
         </div>
       </header>

@@ -1,4 +1,4 @@
-# NexAI Store
+# NovaAI Store
 
 AI Tools & Account Marketplace built with Next.js 16, TypeScript, Tailwind CSS 4, and Supabase.
 
