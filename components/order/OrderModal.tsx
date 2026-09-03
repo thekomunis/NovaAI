@@ -181,7 +181,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             </div>
 
             <button
-              onClick={() => { window.location.href = `/invoice/${result.orderId}`; }}
+              onClick={() => { window.location.href = `/invoice/${result.orderId}?token=${result.invoiceToken}`; }}
               className="w-full bg-gradient-to-r from-indigo-600 via-cyan-600 to-indigo-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-black py-4 rounded-2xl text-sm shadow-xl shadow-indigo-600/30 transition-all cursor-pointer"
             >
               Lihat Tagihan Pembayaran & WA Admin
@@ -241,7 +241,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
                     required
                     placeholder="Nama Lengkap Anda"
                     value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    onChange={(e) => setCustomerName(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
                     className="w-full bg-[#171e31] border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-all shadow-inner"
                   />
                 </div>
@@ -251,9 +251,9 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
                   <input
                     type="tel"
                     required
-                    placeholder="Nomor WhatsApp (misal: 085157746677)"
+                    placeholder="Nomor WhatsApp"
                     value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    onChange={(e) => setCustomerPhone(e.target.value.replace(/[^0-9]/g, ''))}
                     className="w-full bg-[#171e31] border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-all shadow-inner"
                   />
                 </div>

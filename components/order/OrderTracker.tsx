@@ -131,7 +131,7 @@ export function OrderTracker() {
                 type="text"
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
-                placeholder="misal: INV-CHATGPT-002-CA51"
+                placeholder="Order ID (contoh: INV-CHATGPT-002-CA51)"
                 required
                 className="w-full bg-[#171e31] border border-white/10 rounded-2xl px-4 py-3.5 text-white font-mono text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-all shadow-inner"
               />
@@ -144,8 +144,8 @@ export function OrderTracker() {
               <input
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="misal: 085157746677"
+                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                placeholder="Nomor WhatsApp"
                 required
                 className="w-full bg-[#171e31] border border-white/10 rounded-2xl px-4 py-3.5 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-all shadow-inner"
               />
